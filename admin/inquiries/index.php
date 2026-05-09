@@ -1,10 +1,12 @@
 <style>
 	#list td:nth-child(4),
-	#list td:nth-child(5){
+	#list td:nth-child(5),
+	#list td:nth-child(6),
+	#list td:nth-child(7){
 		text-align:center !important;
 	}
 	.message-preview{
-		max-width: 360px;
+		max-width: 250px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -13,6 +15,13 @@
 	.message-preview:hover {
 		text-decoration: underline;
 		color: #007bff;
+	}
+	.contact-link {
+		color: #007bff;
+		text-decoration: none;
+	}
+	.contact-link:hover {
+		text-decoration: underline;
 	}
 </style>
 <div class="card card-outline rounded-0 card-navy">
@@ -25,6 +34,8 @@
 							<th>#</th>
 							<th>Date Created</th>
 							<th>Name</th>
+							<th>Email</th>
+							<th>Contact</th>
 							<th>Message</th>
 							<th>Status</th>
 							<th>Action</th>
@@ -40,6 +51,8 @@
 								<td class="align-items-center text-center"><?php echo $i++; ?></td>
 								<td class="align-items-center"><?php echo date("Y-m-d g:i A",strtotime($row['created_at'])) ?></td>
 								<td class="align-items-center"><?= $row['fullname'] ?></td>
+								<td class="align-items-center"><a href="mailto:<?= $row['email'] ?>" class="contact-link"><?= $row['email'] ?></a></td>
+								<td class="align-items-center"><a href="tel:<?= $row['contact'] ?>" class="contact-link"><?= $row['contact'] ?></a></td>
 								<td class="align-items-center"><a href="./?page=inquiries/view_inquiry&id=<?php echo $row['id'] ?>" class="message-preview text-reset text-decoration-none" title="Click to view full message"><?= htmlspecialchars($row['message']) ?></a></td>
 								<td class="align-items-center text-center">
 									<?php if($row['status'] == 1): ?>
