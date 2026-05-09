@@ -20,15 +20,20 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                 <div class="container-fluid mt-4">
 					
 					<h2>From: <b><?= $fullname ?? "" ?></b></h2>
-					<dl class="row mb-0">
+					<dl class="row mb-3">
 						<dt class="col-auto pe-3"><b>Email:</b></dt>
 						<dd><a href="mailto:<?= $email ?? "unknown@mail.com" ?>"><?= $email ?? "N/A" ?></a></dd>
 					</dl>
-					<dl class="row">
+					<dl class="row mb-4">
 						<dt class="col-auto pe-3"><b>Contact No.:</b></dt>
 						<dd><?= $contact ?? "" ?></dd>
 					</dl>
-					<div><?= isset($message) ? (htmlspecialchars_decode(str_replace("\n", "<br>",$message))) : "" ?></div>
+					<div class="border-top pt-3 mb-3">
+						<h5 class="mb-3"><b>Message:</b></h5>
+						<div class="bg-light p-3 rounded" style="min-height: 120px; white-space: pre-wrap; word-wrap: break-word;">
+							<?= isset($message) ? (htmlspecialchars_decode(str_replace("\n", "<br>",$message))) : "<em class='text-muted'>No message content</em>" ?>
+						</div>
+					</div>
                 </div>
             </div>
 			<div class="card-footer py-1 text-center">

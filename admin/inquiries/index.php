@@ -8,6 +8,11 @@
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		cursor: pointer;
+	}
+	.message-preview:hover {
+		text-decoration: underline;
+		color: #007bff;
 	}
 </style>
 <div class="card card-outline rounded-0 card-navy">
@@ -35,7 +40,7 @@
 								<td class="align-items-center text-center"><?php echo $i++; ?></td>
 								<td class="align-items-center"><?php echo date("Y-m-d g:i A",strtotime($row['created_at'])) ?></td>
 								<td class="align-items-center"><?= $row['fullname'] ?></td>
-								<td class="align-items-center"><div class="message-preview"><?= htmlspecialchars($row['message']) ?></div></td>
+								<td class="align-items-center"><a href="./?page=inquiries/view_inquiry&id=<?php echo $row['id'] ?>" class="message-preview text-reset text-decoration-none" title="Click to view full message"><?= htmlspecialchars($row['message']) ?></a></td>
 								<td class="align-items-center text-center">
 									<?php if($row['status'] == 1): ?>
 										<span class="badge bg-success px-3 rounded-pill">Read</span>
