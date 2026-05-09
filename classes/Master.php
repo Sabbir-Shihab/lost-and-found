@@ -224,6 +224,12 @@ Class Master extends DBConnection {
 	}
 	function save_item(){
 		extract($_POST);
+
+		// ensure item_type column exists (adds it if missing)
+		$col = $this->conn->query("SHOW COLUMNS FROM `item_list` LIKE 'item_type'")->num_rows;
+		if($col == 0){
+			$this->conn->query("ALTER TABLE `item_list` ADD `item_type` varchar(20) NOT NULL DEFAULT 'found'");
+		}
 		$data = "";
 		$err = "";
 		foreach($_POST as $k =>$v){

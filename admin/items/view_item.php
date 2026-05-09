@@ -36,9 +36,16 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 						<img src="<?= validate_image($image_path ?? "") ?>" alt="<?= $title ?? "" ?>">
 					</div>
 					<h2 class="titleTxt"><?= $title ?? "" ?> <span>| <?= $category ?? "" ?></span></h2>
+					<?php if(isset($item_type)): ?>
+						<?php if($item_type == 'found'): ?>
+							<span class="badge bg-primary">Found</span>
+						<?php else: ?>
+							<span class="badge bg-warning text-dark">Missing</span>
+						<?php endif; ?>
+					<?php endif; ?>
 					<p class="text-muted mb-3">Uploaded on <?= isset($created_at) ? date("F d, Y g:i A", strtotime($created_at)) : "N/A" ?></p>
                     <dl>
-						<dt class="text-muted">Founder Name</dt>
+						<dt class="text-muted"><?php echo (isset($item_type) && $item_type == 'missing') ? 'Owner Name' : 'Founder Name'; ?></dt>
 						<dd class="ps-4"><?= $fullname ?? "" ?></dd>
 						<dt class="text-muted">Contact No.</dt>
 						<dd class="ps-4"><?= $contact ?? "" ?></dd>

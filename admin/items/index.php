@@ -47,7 +47,16 @@
 								<td class="align-items-center text-center"><?php echo $i++; ?></td>
 								<td class="align-items-center"><?php echo date("Y-m-d g:i A",strtotime($row['created_at'])) ?></td>
 								<td class="align-items-center"><?= $row['fullname'] ?></td>
-								<td class="align-items-center"><p class="text-center truncate-1" style="max-width:250px"><?= $row['title'] ?></p></td>
+								<td class="align-items-center">
+									<?php if(isset($row['item_type'])): ?>
+										<?php if($row['item_type'] == 'found'): ?>
+											<span class="badge bg-primary px-2 me-2">Found</span>
+										<?php else: ?>
+											<span class="badge bg-warning text-dark px-2 me-2">Missing</span>
+										<?php endif; ?>
+									<?php endif; ?>
+									<p class="text-center truncate-1" style="max-width:250px"><?= $row['title'] ?></p>
+								</td>
 								<td class="align-items-center justify-content-center text-center">
 									<?php if($row['status'] == 1): ?>
 										<span class="badge bg-primary px-3 rounded-pill">Published</span>

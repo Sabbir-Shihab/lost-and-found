@@ -197,11 +197,21 @@ table.dataTable td {
 }
 
 #header .header-main {
+    /* keep header-main full width but no visual background so the inner container controls appearance */
+    background: transparent;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+/* Visual styling applied only to the centered container so the background appears "only the container" */
+#header .header-shell {
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(1, 41, 112, 0.08);
     box-shadow: 0 10px 28px rgba(1, 41, 112, 0.08);
+    /* preserve spacing used previously on header-main */
+    padding: .15rem 0;
 }
 
 #header .header-shell {

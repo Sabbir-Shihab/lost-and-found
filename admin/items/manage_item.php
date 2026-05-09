@@ -34,7 +34,16 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 						</div>
 						<div class="row">
 							<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<label for="fullname" class="control-label">Founder Name</label>
+								<label for="item_type" class="control-label">Type</label>
+								<select name="item_type" id="item_type" class="form-select form-select-sm rounded-0" required>
+									<option value="found" <?= (!isset($item_type) || $item_type == 'found') ? 'selected' : '' ?>>Found</option>
+									<option value="missing" <?= (isset($item_type) && $item_type == 'missing') ? 'selected' : '' ?>>Missing</option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<label for="fullname" id="fullname_label" class="control-label"><?php echo (isset($item_type) && $item_type == 'missing') ? 'Owner Name' : 'Founder Name'; ?></label>
 								<input type="text" name="fullname" id="fullname" class="form-control form-control-sm rounded-0" value="<?php echo isset($fullname) ? $fullname : ''; ?>"  autofocus required/>
 							</div>
 						</div>
@@ -107,6 +116,19 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 			placeholder: 'Please Select Here',
 			width: '100%'
 		})
+		
+		// update fullname label when item_type changes
+		function updateNameLabel(){
+			var t = $('#item_type').val();
+			if(t == 'missing'){
+				$('#fullname_label').text('Owner Name');
+			}else{
+				$('#fullname_label').text('Founder Name');
+			}
+		}
+		$('#item_type').on('change', function(){ updateNameLabel(); });
+		// initialize label on load
+		updateNameLabel();
 		$('#items-form').submit(function(e){
 			e.preventDefault();
             var _this = $(this)

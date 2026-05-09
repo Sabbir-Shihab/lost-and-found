@@ -39,6 +39,13 @@ if(isset($_GET['cid'])){
                         <div class="card-body pt-3">
                             <h4 class="card-title"><?= $row['title'] ?></h4>
                             <small class="text-muted d-block mb-2">Uploaded on <?= date("F d, Y g:i A", strtotime($row['created_at'])) ?></small>
+                            <?php if(isset($row['item_type'])): ?>
+                                <?php if($row['item_type'] == 'found'): ?>
+                                    <span class="badge bg-primary">Found</span>
+                                <?php else: ?>
+                                    <span class="badge bg-warning text-dark">Missing</span>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php if($row['status'] == 2): ?>
                                 <span class="badge bg-success">Owner Found</span>
                             <?php endif; ?>

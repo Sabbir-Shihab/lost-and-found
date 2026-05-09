@@ -36,33 +36,41 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 						<img src="<?= validate_image($image_path ?? "") ?>" alt="<?= $title ?? "" ?>">
 					</div>
 					<h2 class="titleTxt"><?= $title ?? "" ?> <span>| <?= $category ?? "" ?></span></h2>
-					<p class="text-muted mb-3">Uploaded on <?= isset($created_at) ? date("F d, Y g:i A", strtotime($created_at)) : "N/A" ?></p>
-					<?php if(isset($status) && $status == 2): ?>
-						<span class="badge bg-success">Owner Found</span>
-						<?php
-						// show approved claim info
-						$claim_q = $conn->query("SELECT * FROM `claim_requests` WHERE item_id = '{$id}' AND status = 1 ORDER BY approved_at DESC LIMIT 1");
-						if($claim_q && $claim_q->num_rows > 0){
-							$c = $claim_q->fetch_assoc();
-							?>
-							<div class="mt-2">
-								<strong>Received by:</strong> <?= htmlspecialchars($c['name']) ?> <br>
-								<strong>Contact:</strong> <?= htmlspecialchars($c['contact']) ?> <br>
-								<small class="text-muted">Rechived on <?= date("F d, Y g:i A", strtotime($c['approved_at'])) ?></small>
-							</div>
-							<?php
-						}
-						?>
-					<?php elseif(isset($status) && $status == 1): ?>
-						<button class="btn btn-primary btn-sm claim-now" data-id="<?= isset($id) ? $id : '' ?>">I am the Owner — I received it</button>
+					<?php if(isset($item_type)): ?>
+						<?php if($item_type == 'found'): ?>
+							<span class="badge bg-primary">Found</span>
+						<?php else: ?>
+							<span class="badge bg-warning text-dark">Missing</span>
+						<?php endif; ?>
 					<?php endif; ?>
-                    <dl>
-						<dt class="text-muted">Founder Name</dt>
+					<p class="text-muted mb-3">Uploaded on <?= isset($created_at) ? date("F d, Y g:i A", strtotime($created_at)) : "N/A" ?></p>
+					<dl>
+						<dt class="text-muted"><?php echo (isset($item_type) && $item_type == 'missing') ? 'Owner Name' : 'Founder Name'; ?></dt>
 						<dd class="ps-4"><?= $fullname ?? "" ?></dd>
 						<dt class="text-muted">Contact No.</dt>
 						<dd class="ps-4"><?= $contact ?? "" ?></dd>
 						<dt class="text-muted">Description</dt>
 						<dd class="ps-4"><?= isset($description) ? str_replace("\n", "<br>", ($description)) : "" ?></dd>
+						<?php if(isset($status) && $status == 2): ?>
+							<span class="badge bg-success">Owner Found</span>
+							<?php
+							$claim_q = $conn->query("SELECT * FROM `claim_requests` WHERE item_id = '{$id}' AND status = 1 ORDER BY approved_at DESC LIMIT 1");
+							if($claim_q && $claim_q->num_rows > 0){
+								$c = $claim_q->fetch_assoc();
+								?>
+								<div class="mt-2">
+									<strong>Received by:</strong> <?= htmlspecialchars($c['name']) ?> <br>
+									<strong>Contact:</strong> <?= htmlspecialchars($c['contact']) ?> <br>
+									<small class="text-muted">Rechived on <?= date("F d, Y g:i A", strtotime($c['approved_at'])) ?></small>
+								</div>
+								<?php
+							}
+							?>
+						<?php elseif(isset($status) && $status == 1): ?>
+							<div class="mt-3 text-end">
+								<button class="btn btn-primary btn-sm claim-now" data-id="<?= isset($id) ? $id : '' ?>">I am the Owner — I received it</button>
+							</div>
+						<?php endif; ?>
                     </dl>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-<h1 class="pageTitle text-center">Post Found Item</h1>
+<h1 class="pageTitle text-center">Post Item</h1>
 <hr class="mx-auto bg-primary border-primary opacity-100" style="width:50px">
 <div class="row justify-content-center">
     <div class="col-lg-8 col-md-8 col-sm-12 col-12">
@@ -24,7 +24,17 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <label for="fullname" class="control-label">Founder Name</label>
+                            <label for="item_type" class="form-label">Type</label>
+                            <select name="item_type" id="item_type" class="form-select" required>
+                                <option value="found" <?= (!isset($item_type) || $item_type == 'found') ? 'selected' : '' ?>>Found</option>
+                                <option value="missing" <?= (isset($item_type) && $item_type == 'missing') ? 'selected' : '' ?>>Missing</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label for="fullname" id="fullname_label" class="control-label"><?php echo (isset($item_type) && $item_type == 'missing') ? 'Owner Name' : 'Founder Name'; ?></label>
                             <input type="text" name="fullname" id="fullname" class="form-control form-control-sm rounded-0" value="<?php echo isset($fullname) ? $fullname : ''; ?>"  autofocus required/>
                         </div>
                     </div>
@@ -127,5 +137,17 @@ $(document).ready(function(){
         }, 200);
         
     })
+    // update fullname label when item_type changes
+    function updateNameLabel(){
+        var t = $('#item_type').val();
+        if(t == 'missing'){
+            $('#fullname_label').text('Owner Name');
+        }else{
+            $('#fullname_label').text('Founder Name');
+        }
+    }
+    $('#item_type').on('change', function(){ updateNameLabel(); });
+    // initialize label on load
+    updateNameLabel();
 })
 </script>
