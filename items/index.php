@@ -28,10 +28,18 @@ if(isset($_GET['cid'])){
             // show only published items on the public listing
             $items = $conn->query("SELECT * FROM `item_list` where `status` = 1 {$where} order by `title` asc")->fetch_all(MYSQLI_ASSOC);
             ?>
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <label for="item-type-filter" class="form-label mb-0">Filter by Type:</label>
+                <select id="item-type-filter" class="form-select" style="width: 200px;">
+                    <option value="">All Items</option>
+                    <option value="found">Found Items</option>
+                    <option value="missing">Missing Items</option>
+                </select>
+            </div>
             <div id="item-list">
                 <?php if(count($items) > 0): ?>
                 <?php foreach($items as $row): ?>
-                <div class="item-item text-decoration-none text-reset" data-href="<?= base_url.'?page=items/view&id='.$row['id'] ?>">
+                <div class="item-item text-decoration-none text-reset" data-href="<?= base_url.'?page=items/view&id='.$row['id'] ?>" data-item-type="<?= $row['item_type'] ?? 'found' ?>">
                     <div class="card" style="cursor:pointer">
                         <div class="item-card-img">
                             <img src="<?= validate_image($row['image_path']) ?>" alt="">
@@ -98,6 +106,18 @@ if(isset($_GET['cid'])){
 <script>
 $(function(){
         var claimModal = new bootstrap.Modal(document.getElementById('claimModal'));
+    // Handle item type filter
+    $(document).on('change', '#item-type-filter', function(){
+        var filterValue = $(this).val();
+        $('.item-item').each(function(){
+            var itemType = $(this).data('item-type') || 'found';
+            if(filterValue === '' || itemType === filterValue){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
     // navigate to item view when card clicked (except when clicking interactive elements)
     $(document).on('click', '.item-item .card', function(e){
         if($(e.target).closest('.claim-btn, button, a, .btn').length > 0) return;
