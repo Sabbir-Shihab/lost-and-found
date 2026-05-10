@@ -131,27 +131,35 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 		updateNameLabel();
 		$('#items-form').submit(function(e){
 			e.preventDefault();
-            var _this = $(this)
-			 $('.err-msg').remove();
-			setTimeout(() => {
-				start_loader();
-				$.ajax({
-					url:_base_url_+"classes/Master.php?f=save_item",
-					data: new FormData($(this)[0]),
-					cache: false,
-					contentType: false,
-					processData: false,
-					method: 'POST',
-					type: 'POST',
-					dataType: 'json',
-					error:err=>{
-						console.log(err)
-						alert_toast("An error occured",'error');
-						end_loader();
-					},
-					success:function(resp){
-						if(typeof resp =='object' && resp.status == 'success'){
-							location.replace('./?page=items/view_item&id='+resp.iid)
+svar _this = $(this)
+				 $('.err-msg').remove();
+				setTimeout(() => {
+					start_loader();
+					$.ajax({
+						url:_base_url_+"classes/Master.php?f=save_item",
+						data: new FormData($(this)[0]),
+						cache: false,
+						contentType: false,
+						processData: false,
+						method: 'POST',
+						type: 'POST',
+						dataType: 'json',
+						error:err=>{
+							console.log(err)
+							alert_toast("An error occured",'error');
+							end_loader();
+						},
+						success:function(resp){
+							if(typeof resp =='object' && resp.status == 'success'){
+								var itemType = $('#item_type').val();
+								var message = itemType === 'missing' 
+									? 'Missing Item Data successfully saved.'
+									: 'Found Item Data successfully saved.';
+								alert_toast(message, 'success');
+								end_loader();
+								setTimeout(() => {
+									location.replace('./?page=items/view_item&id='+resp.iid)
+								}, 1500);
 						}else if(resp.status == 'failed' && !!resp.msg){
 							var el = $('<div>')
 								el.addClass("alert alert-danger err-msg").text(resp.msg)

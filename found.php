@@ -119,7 +119,15 @@ $(document).ready(function(){
                 },
                 success:function(resp){
                     if(typeof resp =='object' && resp.status == 'success'){
-                        location.replace('./?page=found')
+                        var itemType = $('#item_type').val();
+                        var message = itemType === 'missing' 
+                            ? 'Missing Item Data successfully submitted. We\'ll review your submitted details first before publishing it to the public.'
+                            : 'Found Item Data successfully submitted. We\'ll review your submitted details first before publishing it to the public.';
+                        alert_toast(message, 'success');
+                        end_loader();
+                        setTimeout(() => {
+                            location.replace('./?page=found')
+                        }, 2000);
                     }else if(resp.status == 'failed' && !!resp.msg){
                         var el = $('<div>')
                             el.addClass("alert alert-danger err-msg").text(resp.msg)
